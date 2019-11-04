@@ -1,59 +1,54 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <title>Bootstrap 4 Website Example</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
-  <script src="./js_bin/p5.min.js"></script>
-  <style>
-  .fakeimg {
-    height: 200px;
-    background: #aaa;
-  }
-  #map{
-    height:inherit;
-  }
-  </style>
+      <title>Bootstrap 4 Website Example</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+      <script src="./js_bin/p5.min.js"></script>
+      <script src="./js_bin/map_generator.js"></script>
+      <style>
+            .fakeimg {
+                  height: 200px;
+                  background: #aaa;
+            }
+
+            #map {
+                  height: inherit;
+            }
+      </style>
 </head>
+
 <body>
 
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
-  <a class="navbar-brand" href="#">Capstone-Lee-Weber</a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
-    <span class="navbar-toggler-icon"></span>
-  </button>
-  <div class="collapse navbar-collapse" id="collapsibleNavbar">
-    <ul class="navbar-nav">
-      <li class="form-inline">
-        <input class="form-control mr-sm-2" type="text" placeholder="Search for Tag" id="search_field">
-        <button class="btn btn-success" type="submit">Search</button>
-      </li>
-    </ul>
-  </div>  
-</nav>
+      <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+            <a class="navbar-brand" href="#">Capstone-Lee-Weber</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+                  <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="collapsibleNavbar">
+                  <ul class="navbar-nav">
+                        <li class="form-inline">
+                              <input class="form-control mr-sm-2" type="text" placeholder="Search for Tag" id="search_field">
+                              <button class="btn btn-success" onclick="generatePath(true);">Search</button>
+                        </li>
+                  </ul>
+            </div>
+      </nav>
 
 
-  <div id="map" style="width:auto; height:500px;"></div>
-  <script>
-    var map;
-    function initMap() {
-      map = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: -34.397, lng: 150.644},
-        zoom: 8
-      });
-    }
-  </script>
-  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZhVDQnuavxGHem13vmNcLlxgeVCxfTI&callback=initMap"
-  async defer></script>
-    
-  
+      <div id="map" style="width:auto; height:500px;"></div>
+      <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZhVDQnuavxGHem13vmNcLlxgeVCxfTI&callback=initMap" async defer></script>
+
+
 
 </body>
-</html> 
+
+</html>
 <!-- <!DOCTYPE html>
 <html>
   <head>
