@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-      <title>Bootstrap 4 Website Example</title>
+      <title>Lee Weber Cyber Capstone</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
       <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
@@ -34,7 +34,8 @@
                   <ul class="navbar-nav">
                         <li class="form-inline">
                               <input class="form-control mr-sm-2" type="text" placeholder="Search for Tag" id="search_field">
-                              <button class="btn btn-success" onclick="generatePath(true);">Search</button>
+                              <button class="btn btn-success" onclick="getCenterOfMap(document.getElementById('search_field').value);generatePath();">Search</button>
+                              <button class="btn btn-danger" style="margin-left: 10px;" onclick="clearPaths();">Clear Paths</button>
                         </li>
                   </ul>
             </div>
@@ -43,8 +44,24 @@
 
       <div id="map" style="width:auto; height:500px;"></div>
       <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDwZhVDQnuavxGHem13vmNcLlxgeVCxfTI&callback=initMap" async defer></script>
-
-
+      <div class="row">
+            <h2 id="table_header" class="col-md-12">Now Displaying Data for: <span style="color:navy;">Enter capture tag at the top</span></h2>
+      </div>
+      <div class="row">
+            <table class="table table-hover col-md-12 " style="margin-left: 5px;">
+                  <thead>
+                    <tr>
+                      <th>Data Point</th>
+                      <th>Time</th>
+                      <th>Latitude</th>
+                      <th>Longitude</th>
+                      <th>Bearing</th>
+                    </tr>
+                  </thead>
+                  <tbody id="results_table_body">
+                  </tbody>
+                </table>
+      </div>
 
 </body>
 
