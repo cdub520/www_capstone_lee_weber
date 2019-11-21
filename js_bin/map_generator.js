@@ -1,4 +1,4 @@
-
+hostname=location.hostname
 function initMap() {
       map = new google.maps.Map(document.getElementById('map'), {
             center: {
@@ -9,49 +9,43 @@ function initMap() {
       });
 }
 lineArray=[];
-function generatePath(debug = false) {
-      console.log("GeneratePath\nDebug:\t"+debug+"\nSearch Criteria:\t"+document.getElementById("search_field").value);
-      if (debug == false) {
-            pathPoints = [];
+function generatePath(tag=null) {
+      search='';
+      console.log("GeneratePath\n\nSearch Criteria:\t"+document.getElementById("search_field").value);
+      if (tag == null) {
             search = document.getElementById("search_field").value;
-            var xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                  if (this.readyState == 4 && this.status == 200) {
-                        jsonObj = JSON.parse(this.responseText);
-                        for (i in jsonObj) {
-                              pathPoints.push({
-                                    'lat': jsonObj[i].latitude,
-                                    'lng': jsonObj[i].longitude
-                              });
-                              document.getElementById("results_table_body").innerHTML+="<tr><td>"+i+'</td>'+'<td> FEATURE NOT AVAILABLE</td><td>'+jsonObj[i].latitude+'</td><td>'+jsonObj[i].longitude+'</td><td>FEATURE NOT YET AVAILABLE</td></tr>'
-                        }
-                        console.log(pathPoints);
-                        populateMap(pathPoints);
+      }else{
+            search = toString(tag);      
+      }      
+      pathPoints = [];
+      document.getElementById("tagTable").innerHTML=search;      
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                  jsonObj = JSON.parse(this.responseText);
+                  document.getElementById("results_table_body").innerHTML=""; //reset the table
+                  for (i in jsonObj) { //populate the dictionary from the response json
+                        pathPoints.push({
+                              'lat': jsonObj[i].latitude,
+                              'lng': jsonObj[i].longitude
+                        }); //append it to the table at the bottom of the page
+                        document.getElementById("results_table_body").innerHTML+="<tr><td>"+i+'</td>'+'<td> FEATURE NOT AVAILABLE</td><td>'+jsonObj[i].latitude+'</td><td>'+jsonObj[i].longitude+'</td><td>FEATURE NOT YET AVAILABLE</td></tr>'
                   }
-            };
-            xhttp.open("POST", "http://54.175.22.220/cgi-bin/querypage.py", true);
-            xhttp.send("tag=" + search);
-      } else {
-            var pathPoints = [{
-                        lat: 37.772,
-                        lng: -122.214
-                  },
-                  {
-                        lat: 21.291,
-                        lng: -157.821
-                  },
-                  {
-                        lat: -18.142,
-                        lng: 178.431
-                  },
-                  {
-                        lat: -27.467,
-                        lng: 153.027
-                  }
-            ];
-            populateMap(pathPoints);
-      }
+                  console.log(pathPoints);
+                  populateMap(pathPoints); //puts the points on the map
+                  
+            }
+      };
+      xhttp.open("POST", "http://"+hostname+"/cgi-bin/querypage.py", true);
+      xhttp.send("tag=" + search);
+      
 }
+/*=============================================================================================================================================
+| Function:	foo
+| Args:	bar
+| returns:	none 
+| description:	1
+|=============================================================================================================================================*/
 
 function populateMap(pathPoints) {
       var newpath = new google.maps.Polyline({
@@ -76,7 +70,7 @@ function getCenterOfMap(tag){
                map.setCenter(new google.maps.LatLng(jsonObj.latitude,jsonObj.longitude));
           }
      };
-     xhttp.open("POST", "http://54.175.22.220/cgi-bin/getIntLocation.py", true);
+     xhttp.open("POST", "http://"+hostname+"/cgi-bin/getIntLocation.py", false);
      xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
      xhttp.send("tag="+tag);
 }
@@ -84,4 +78,22 @@ function clearPaths(){
       for (i=0; i<lineArray.length;i++){
             lineArray[i].setMap(null);
       }
+}
+function getActiveTags(){
+      var xhttp = new XMLHttpRequest();
+      xhttp.onreadystatechange = function() {
+            if (this.readyState == 4 && this.status == 200) {
+                  jsonObj=JSON.parse(this.responseText);
+                  appendText=''
+                  for (i in jsonObj.results){
+                        tagline="<a class='dropdown-item' onclick='clearPaths();getCenterOfMap(\""+jsonObj.results[i]+"\");generatePath(\""+jsonObj.results[i]+"\");'>"+jsonObj.results[i]+"</a>";
+                        appendText += tagline;
+                  }
+                  document.getElementById('tagDropdown').innerHTML=appendText;
+                  console.log(document.getElementById('tagDropdown').innerHTML)
+            } 
+     };
+     xhttp.open("POST", "http://"+hostname+"/cgi-bin/getActiveTags.py", true);
+     xhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+     xhttp.send();
 }
